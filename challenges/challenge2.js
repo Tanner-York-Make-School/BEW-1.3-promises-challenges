@@ -7,15 +7,26 @@
  *    it runs? Run the code using `node challenge2.js` and verify that your
  *    expectation was correct.
  * 
+ *    Hello there, Ducky
+ *    Null or ' '
+ * 
+ *    I was wrong, I wasn't sure of the return statement would wait for the new
+ *    promise to complete or if it would just returns the promise right away.
  * 
  * 2. What happens if greet() fails? Make it fail by changing 'name' to a number
  *    instead of a string. What happens? Does uppercaser() still run?
  * 
+ *    When greet() fails, the catch statement is called to print 'Received an error!'
+ *    and the reject from gretting() 'Name must be a string!' and upercaser() is 
+ *    not called.
  * 
  * 3. What happens if greet() succeeds and uppercaser() fails? Modify your code
  *    to achieve this result by changing the values of 'name' and 'my_str' and
  *    run the code again.
  * 
+ *    When uppercase() fails, the output of greet() is printed properly and then 
+ *    the catch statments gets the reject from uppercase() and prints 
+ *    'Received an error!' and 'Argument to uppercaser must be string'.
  * 
  * 4. Write a method that takes a string as input and returns the input string
  *    with a space added between each character. E.g. 'foo' -> 'f o o'
@@ -63,8 +74,24 @@ function uppercaser(str) {
     });
 }
 
+/**
+ * Returns the 's p a c e d' version of a string.
+ * @param {*} str 
+ */
+function spacer(str) {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      if (typeof str === 'string') {
+        resolve(str.split('').join(' '));
+      } else {
+        reject('Argument to spacer must be string');
+      }
+    }, 1000);
+  });
+}
+
 name = 'Ducky'
-my_str = 'Make School is Awesome!!!'
+my_str = 'Welcome to Make School!!!'
 
 greet(name)
     .then((greetResult) => {
@@ -73,6 +100,10 @@ greet(name)
     })
     .then((uppercaserResult) => {
         console.log(uppercaserResult)
+        return spacer(name)
+    })
+    .then((spacerResult) => {
+        console.log(spacerResult)
     }).catch((err) => {
         console.log('Received an error!')
         console.log(err);
